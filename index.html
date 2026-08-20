@@ -1,65 +1,512 @@
 <!doctype html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
-        <meta name="mobile-web-app-capable" content="yes">
-        <meta name="apple-mobile-web-app-capable" content="yes">
-        <link rel="stylesheet" href="./resources/ol.css">
-        <link rel="stylesheet" href="resources/fontawesome-all.min.css">
-        <link href="resources/photon-geocoder-autocomplete.min.css" rel="stylesheet">
-        <link rel="stylesheet" href="./resources/ol-layerswitcher.css">
-        <link rel="stylesheet" href="./resources/qgis2web.css">
-        <style>
-        html, body {
-            background-color: #ffffff;
-        }
-        .ol-control > * {
-            background-color: #f8f8f8!important;
-            color: #444444!important;
-            border-radius: 0px;
-        }
-        .ol-attribution a, .gcd-gl-input::placeholder, .search-layer-input-search::placeholder {
-            color: #444444!important;
-        }
-        .search-layer-input-search {
-            background-color: #f8f8f8!important;
-        }
-        .ol-control > *:focus, .ol-control >*:hover {
-            background-color: rgba(248, 248, 248, 0.7)!important;
-        } 
-        .ol-control {
-            background-color: rgba(255,255,255,.4) !important;
-            padding: 2px !important;
-        } 
-        </style>
 
-        <style>
-        #map {
-            width: 1243px;
-            height: 625px;
+<head>
+
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <meta name="viewport"
+          content="initial-scale=1,
+                   user-scalable=no,
+                   maximum-scale=1,
+                   width=device-width">
+
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+
+    <meta name="theme-color" content="#1b5e20">
+
+    <meta name="description"
+          content="Central Equatoria Geographic Information System">
+
+    <title>
+        Central Equatoria GIS
+    </title>
+
+
+    <!-- =========================
+         CSS FILES
+    ========================== -->
+
+    <link rel="stylesheet"
+          href="ol.css">
+
+    <link rel="stylesheet"
+          href="fontawesome-all.min.css">
+
+    <link rel="stylesheet"
+          href="photon-geocoder-autocomplete.min.css">
+
+    <link rel="stylesheet"
+          href="ol-layerswitcher.css">
+
+    <link rel="stylesheet"
+          href="qgis2web.css">
+
+
+    <!-- =========================
+         CUSTOM CSS
+    ========================== -->
+
+    <style>
+
+        html,
+        body {
+
+            margin: 0;
+
+            padding: 0;
+
+            width: 100%;
+
+            height: 100%;
+
+            overflow: hidden;
+
+            background-color: #ffffff;
+
+            font-family: Arial, sans-serif;
+
         }
-        </style>
-        <title></title>
-    </head>
-    <body>
-        <div id="map">
-            <div id="popup" class="ol-popup">
-                <a href="#" id="popup-closer" class="ol-popup-closer"></a>
-                <div id="popup-content"></div>
+
+
+        /* MAP */
+
+        #map {
+
+            width: 100%;
+
+            height: 100vh;
+
+            position: relative;
+
+        }
+
+
+        /* OPENLAYERS CONTROLS */
+
+        .ol-control > * {
+
+            background-color: #f8f8f8 !important;
+
+            color: #444444 !important;
+
+            border-radius: 3px;
+
+        }
+
+
+        .ol-control > *:hover {
+
+            background-color: #ffffff !important;
+
+        }
+
+
+        .ol-control {
+
+            background-color: rgba(255,255,255,0.4) !important;
+
+            padding: 2px !important;
+
+        }
+
+
+        /* SEARCH PLACEHOLDER */
+
+        .gcd-gl-input::placeholder {
+
+            color: #444444 !important;
+
+        }
+
+
+        .search-layer-input-search::placeholder {
+
+            color: #444444 !important;
+
+        }
+
+
+        .search-layer-input-search {
+
+            background-color: #f8f8f8 !important;
+
+        }
+
+
+        /* ATTRIBUTION */
+
+        .ol-attribution a {
+
+            color: #444444 !important;
+
+        }
+
+
+        /* POPUP */
+
+        .ol-popup {
+
+            position: absolute;
+
+            background-color: white;
+
+            box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+
+            padding: 15px;
+
+            border-radius: 10px;
+
+            border: 1px solid #cccccc;
+
+            bottom: 12px;
+
+            left: -50px;
+
+            min-width: 280px;
+
+        }
+
+
+        .ol-popup:after,
+        .ol-popup:before {
+
+            top: 100%;
+
+            border: solid transparent;
+
+            content: " ";
+
+            height: 0;
+
+            width: 0;
+
+            position: absolute;
+
+            pointer-events: none;
+
+        }
+
+
+        .ol-popup:after {
+
+            border-top-color: white;
+
+            border-width: 10px;
+
+            left: 48px;
+
+            margin-left: -10px;
+
+        }
+
+
+        .ol-popup:before {
+
+            border-top-color: #cccccc;
+
+            border-width: 11px;
+
+            left: 48px;
+
+            margin-left: -11px;
+
+        }
+
+
+        .ol-popup-closer {
+
+            text-decoration: none;
+
+            position: absolute;
+
+            top: 2px;
+
+            right: 8px;
+
+        }
+
+
+        .ol-popup-closer:after {
+
+            content: "✖";
+
+        }
+
+
+        /* TITLE */
+
+        .gis-title {
+
+            position: absolute;
+
+            top: 15px;
+
+            left: 50%;
+
+            transform: translateX(-50%);
+
+            z-index: 1000;
+
+            background: rgba(27,94,32,0.95);
+
+            color: white;
+
+            padding: 10px 25px;
+
+            border-radius: 5px;
+
+            font-size: 20px;
+
+            font-weight: bold;
+
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+
+            pointer-events: none;
+
+        }
+
+
+        /* MOBILE TITLE */
+
+        @media screen and (max-width: 600px) {
+
+            .gis-title {
+
+                font-size: 15px;
+
+                padding: 8px 15px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================
+         MAP CONTAINER
+    ========================== -->
+
+    <div id="map">
+
+
+        <!-- MAP POPUP -->
+
+        <div id="popup"
+             class="ol-popup">
+
+            <a href="#"
+               id="popup-closer"
+               class="ol-popup-closer">
+            </a>
+
+            <div id="popup-content">
             </div>
+
         </div>
-        <script src="resources/qgis2web_expressions.js"></script>
-        <script src="./resources/functions.js"></script>
-        <script src="./resources/ol.js"></script>
-        <script src="./resources/ol-layerswitcher.js"></script>
-        <script src="resources/photon-geocoder-autocomplete.min.js"></script>
-        <script src="resources/olms.js"></script>
-        <script src="layers/CentralEquatoriaStates_0.js"></script><script src="layers/Central_Equatoria_GIScentral_equatoria_states_1.js"></script><script src="layers/amenity_school_2.js"></script><script src="layers/amenity_school_3.js"></script><script src="layers/amenity_school_4.js"></script><script src="layers/highway_primary_5.js"></script><script src="layers/highway_primary_6.js"></script><script src="layers/highway_secondary_7.js"></script><script src="layers/highway_secondary_8.js"></script>
-        <script src="styles/CentralEquatoriaStates_0_style.js"></script><script src="styles/Central_Equatoria_GIScentral_equatoria_states_1_style.js"></script><script src="styles/amenity_school_2_style.js"></script><script src="styles/amenity_school_3_style.js"></script><script src="styles/amenity_school_4_style.js"></script><script src="styles/highway_primary_5_style.js"></script><script src="styles/highway_primary_6_style.js"></script><script src="styles/highway_secondary_7_style.js"></script><script src="styles/highway_secondary_8_style.js"></script>
-        <script src="./layers/layers.js" type="text/javascript"></script> 
-        <script src="./resources/Autolinker.min.js"></script>
-        <script src="./resources/qgis2web.js"></script>
-    </body>
+
+
+        <!-- MAP TITLE -->
+
+        <div class="gis-title">
+
+            Central Equatoria GIS
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- =========================
+         QGIS2WEB EXPRESSIONS
+    ========================== -->
+
+    <script src="qgis2web_expressions.js">
+    </script>
+
+
+
+    <!-- =========================
+         GENERAL FUNCTIONS
+    ========================== -->
+
+    <script src="functions.js">
+    </script>
+
+
+
+    <!-- =========================
+         OPENLAYERS
+    ========================== -->
+
+    <script src="ol.js">
+    </script>
+
+
+
+    <!-- =========================
+         LAYER SWITCHER
+    ========================== -->
+
+    <script src="ol-layerswitcher.js">
+    </script>
+
+
+
+    <!-- =========================
+         GEOCODER
+    ========================== -->
+
+    <script src="photon-geocoder-autocomplete.min.js">
+    </script>
+
+
+
+    <!-- =========================
+         OLMs
+    ========================== -->
+
+    <script src="olms.js">
+    </script>
+
+
+
+    <!-- ==================================================
+         CENTRAL EQUATORIA STATES
+    =================================================== -->
+
+    <script src="CentralEquatoriaStates_0.js">
+    </script>
+
+
+    <script src="Central_Equatoria_GIScentral_equatoria_states_1.js">
+    </script>
+
+
+
+    <!-- ==================================================
+         SCHOOLS
+    =================================================== -->
+
+    <script src="amenity_school_2.js">
+    </script>
+
+
+    <script src="amenity_school_3.js">
+    </script>
+
+
+    <script src="amenity_school_4.js">
+    </script>
+
+
+
+    <!-- ==================================================
+         PRIMARY ROADS
+    =================================================== -->
+
+    <script src="highway_primary_5.js">
+    </script>
+
+
+    <script src="highway_primary_6.js">
+    </script>
+
+
+
+    <!-- ==================================================
+         SECONDARY ROADS
+    =================================================== -->
+
+    <script src="highway_secondary_7.js">
+    </script>
+
+
+    <script src="highway_secondary_8.js">
+    </script>
+
+
+
+    <!-- ==================================================
+         LAYER STYLES
+    =================================================== -->
+
+    <script src="CentralEquatoriaStates_0_style.js">
+    </script>
+
+
+    <script src="Central_Equatoria_GIScentral_equatoria_states_1_style.js">
+    </script>
+
+
+    <script src="amenity_school_2_style.js">
+    </script>
+
+
+    <script src="amenity_school_3_style.js">
+    </script>
+
+
+    <script src="amenity_school_4_style.js">
+    </script>
+
+
+    <script src="highway_primary_5_style.js">
+    </script>
+
+
+    <script src="highway_primary_6_style.js">
+    </script>
+
+
+    <script src="highway_secondary_7_style.js">
+    </script>
+
+
+    <script src="highway_secondary_8_style.js">
+    </script>
+
+
+
+    <!-- ==================================================
+         LAYERS CONFIGURATION
+    =================================================== -->
+
+    <script src="layers.js"
+            type="text/javascript">
+    </script>
+
+
+
+    <!-- ==================================================
+         AUTOLINKER
+    =================================================== -->
+
+    <script src="Autolinker.min.js">
+    </script>
+
+
+
+    <!-- ==================================================
+         MAIN QGIS2WEB APPLICATION
+    =================================================== -->
+
+    <script src="qgis2web.js">
+    </script>
+
+
+</body>
+
 </html>
