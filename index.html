@@ -1,55 +1,44 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
 
-    <meta charset="utf-8">
-
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="UTF-8">
 
     <meta name="viewport"
-          content="initial-scale=1,
-                   user-scalable=no,
-                   maximum-scale=1,
-                   width=device-width">
+          content="width=device-width,
+                   initial-scale=1.0,
+                   maximum-scale=1.0,
+                   user-scalable=no">
 
     <meta name="mobile-web-app-capable" content="yes">
-
     <meta name="apple-mobile-web-app-capable" content="yes">
-
-    <meta name="theme-color" content="#1b5e20">
-
-    <meta name="description"
-          content="Central Equatoria Geographic Information System">
 
     <title>Central Equatoria GIS</title>
 
 
-    <!-- =====================================================
-         OPENLAYERS CSS
-    ====================================================== -->
+    <!-- ========================= -->
+    <!-- CSS FILES -->
+    <!-- ========================= -->
 
-    <link rel="stylesheet" href="ol.css">
-
-    <link rel="stylesheet"
-          href="fontawesome-all.min.css">
+    <link rel="stylesheet" href="./ol.css">
 
     <link rel="stylesheet"
-          href="photon-geocoder-autocomplete.min.css">
+          href="./fontawesome-all.min.css">
 
     <link rel="stylesheet"
-          href="ol-layerswitcher.css">
+          href="./photon-geocoder-autocomplete.min.css">
 
     <link rel="stylesheet"
-          href="ol-search-layer.css">
+          href="./ol-layerswitcher.css">
 
     <link rel="stylesheet"
-          href="qgis2web.css">
+          href="./qgis2web.css">
 
 
-    <!-- =====================================================
-         PAGE STYLE
-    ====================================================== -->
+    <!-- ========================= -->
+    <!-- MAP STYLE -->
+    <!-- ========================= -->
 
     <style>
 
@@ -57,36 +46,64 @@
         body {
 
             margin: 0;
-
             padding: 0;
 
             width: 100%;
-
             height: 100%;
 
             overflow: hidden;
 
-            background: #ffffff;
-
-            font-family: Arial, Helvetica, sans-serif;
-
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
         }
 
 
         #map {
 
+            position: absolute;
+
+            top: 0;
+            left: 0;
+
             width: 100%;
+            height: 100%;
 
-            height: 100vh;
-
-            position: relative;
-
+            background: #eeeeee;
         }
 
 
-        /* ==============================================
-           MAP POPUP
-        =============================================== */
+        /* OpenLayers controls */
+
+        .ol-control {
+
+            background-color:
+                rgba(255,255,255,0.7) !important;
+
+            padding: 3px !important;
+        }
+
+
+        .ol-control button {
+
+            background-color:
+                #ffffff !important;
+
+            color: #333333 !important;
+
+            border-radius: 3px !important;
+        }
+
+
+        .ol-control button:hover {
+
+            background-color:
+                #eeeeee !important;
+        }
+
+
+        /* Popup */
 
         .ol-popup {
 
@@ -94,11 +111,12 @@
 
             background-color: white;
 
-            box-shadow: 0 1px 6px rgba(0,0,0,0.35);
+            box-shadow:
+                0 1px 6px rgba(0,0,0,0.3);
 
             padding: 15px;
 
-            border-radius: 10px;
+            border-radius: 8px;
 
             border: 1px solid #cccccc;
 
@@ -106,18 +124,11 @@
 
             left: -50px;
 
-            min-width: 280px;
+            min-width: 220px;
 
-            max-width: 450px;
+            max-width: 350px;
 
-            max-height: 400px;
-
-            overflow-y: auto;
-
-            display: none;
-
-            z-index: 2000;
-
+            z-index: 1000;
         }
 
 
@@ -126,44 +137,47 @@
 
             top: 100%;
 
-            border: solid transparent;
+            border:
+                solid transparent;
 
             content: " ";
 
             height: 0;
-
             width: 0;
 
             position: absolute;
 
             pointer-events: none;
-
         }
 
 
         .ol-popup:after {
 
-            border-top-color: white;
+            border-top-color:
+                white;
 
-            border-width: 10px;
+            border-width:
+                10px;
 
             left: 48px;
 
-            margin-left: -10px;
-
+            margin-left:
+                -10px;
         }
 
 
         .ol-popup:before {
 
-            border-top-color: #cccccc;
+            border-top-color:
+                #cccccc;
 
-            border-width: 11px;
+            border-width:
+                11px;
 
             left: 48px;
 
-            margin-left: -11px;
-
+            margin-left:
+                -11px;
         }
 
 
@@ -177,176 +191,102 @@
 
             right: 8px;
 
-            z-index: 10;
+            color: #333333;
 
+            font-size: 16px;
         }
 
 
         .ol-popup-closer:after {
 
             content: "✖";
-
-            color: #555;
-
         }
 
 
-        /* ==============================================
-           MAP TITLE
-        =============================================== */
+        /* Header */
 
-        .gis-title {
+        #gis-title {
 
             position: absolute;
 
             top: 15px;
-
             left: 50%;
 
-            transform: translateX(-50%);
+            transform:
+                translateX(-50%);
 
-            z-index: 1000;
+            z-index: 999;
 
-            background: rgba(27, 94, 32, 0.95);
+            background:
+                rgba(255,255,255,0.95);
 
-            color: white;
+            padding:
+                10px 20px;
 
-            padding: 10px 24px;
+            border-radius:
+                5px;
 
-            border-radius: 5px;
+            box-shadow:
+                0 2px 8px
+                rgba(0,0,0,0.25);
 
-            font-size: 20px;
+            font-size:
+                20px;
 
-            font-weight: bold;
+            font-weight:
+                bold;
 
-            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            color:
+                #222;
 
-            pointer-events: none;
-
-            white-space: nowrap;
-
+            white-space:
+                nowrap;
         }
 
 
-        /* ==============================================
-           CONTROLS
-        =============================================== */
+        /* Mobile title */
 
-        .ol-control > * {
+        @media(max-width:600px) {
 
-            background-color: #f8f8f8 !important;
-
-            color: #444444 !important;
-
-            border-radius: 3px;
-
-        }
-
-
-        .ol-control > *:hover {
-
-            background-color: #ffffff !important;
-
-        }
-
-
-        .ol-control {
-
-            background-color: rgba(255,255,255,0.4) !important;
-
-            padding: 2px !important;
-
-        }
-
-
-        .ol-attribution a {
-
-            color: #444444 !important;
-
-        }
-
-
-        .search-layer-input-search {
-
-            background-color: #f8f8f8 !important;
-
-        }
-
-
-        .search-layer-input-search::placeholder {
-
-            color: #444444 !important;
-
-        }
-
-
-        .gcd-gl-input::placeholder {
-
-            color: #444444 !important;
-
-        }
-
-
-        /* ==============================================
-           POPUP TABLE
-        =============================================== */
-
-        .ol-popup table {
-
-            width: 100%;
-
-            border-collapse: collapse;
-
-            margin-top: 8px;
-
-        }
-
-
-        .ol-popup td,
-        .ol-popup th {
-
-            padding: 5px;
-
-            border-bottom: 1px solid #eeeeee;
-
-            text-align: left;
-
-            font-size: 13px;
-
-        }
-
-
-        .ol-popup strong {
-
-            color: #1b5e20;
-
-        }
-
-
-        /* ==============================================
-           MOBILE
-        =============================================== */
-
-        @media screen and (max-width: 650px) {
-
-            .gis-title {
+            #gis-title {
 
                 font-size: 15px;
 
-                padding: 8px 15px;
-
-                top: 8px;
-
+                padding:
+                    8px 12px;
             }
+        }
 
-            .ol-popup {
 
-                min-width: 220px;
+        /* Loading message */
 
-                max-width: 300px;
+        #loading {
 
-            }
+            position: absolute;
 
+            top: 50%;
+            left: 50%;
+
+            transform:
+                translate(-50%,-50%);
+
+            z-index: 2000;
+
+            background:
+                white;
+
+            padding:
+                20px 30px;
+
+            border-radius:
+                8px;
+
+            box-shadow:
+                0 2px 10px
+                rgba(0,0,0,0.25);
+
+            font-size:
+                16px;
         }
 
     </style>
@@ -357,16 +297,36 @@
 <body>
 
 
-    <!-- =====================================================
-         MAP
-    ====================================================== -->
+    <!-- ========================= -->
+    <!-- TITLE -->
+    <!-- ========================= -->
+
+    <div id="gis-title">
+
+        Central Equatoria GIS
+
+    </div>
+
+
+    <!-- ========================= -->
+    <!-- LOADING -->
+    <!-- ========================= -->
+
+    <div id="loading">
+
+        Loading Central Equatoria GIS...
+
+    </div>
+
+
+    <!-- ========================= -->
+    <!-- MAP -->
+    <!-- ========================= -->
 
     <div id="map">
 
 
-        <!-- =================================================
-             POPUP
-        ================================================== -->
+        <!-- Popup -->
 
         <div id="popup"
              class="ol-popup">
@@ -381,205 +341,222 @@
 
         </div>
 
-
-        <!-- =================================================
-             TITLE
-        ================================================== -->
-
-        <div class="gis-title">
-
-            Central Equatoria GIS
-
-        </div>
-
-
     </div>
 
 
 
-    <!-- =====================================================
-         JAVASCRIPT LIBRARIES
-    ====================================================== -->
+    <!-- ================================================= -->
+    <!-- JAVASCRIPT LIBRARIES -->
+    <!-- ================================================= -->
 
 
-    <!-- QGIS EXPRESSIONS -->
+    <!-- QGIS expressions -->
 
-    <script src="qgis2web_expressions.js">
+    <script src="./qgis2web_expressions.js">
     </script>
 
 
-    <!-- GENERAL FUNCTIONS -->
+    <!-- Functions -->
 
-    <script src="functions.js">
+    <script src="./functions.js">
     </script>
 
 
-    <!-- OPENLAYERS -->
+    <!-- OpenLayers -->
 
-    <script src="ol.js">
+    <script src="./ol.js">
     </script>
 
 
-    <!-- OPENLAYERS LAYER SWITCHER -->
+    <!-- Layer switcher -->
 
-    <script src="ol-layerswitcher.js">
+    <script src="./ol-layerswitcher.js">
     </script>
 
 
-    <!-- SEARCH -->
+    <!-- Search -->
 
-    <script src="photon-geocoder-autocomplete.min.js">
+    <script src="./photon-geocoder-autocomplete.min.js">
     </script>
 
 
-    <!-- OLMS -->
+    <!-- OpenLayers Mapbox style -->
 
-    <script src="olms.js">
-    </script>
-
-
-    <!-- PROJ4 -->
-
-    <script src="proj4.js">
-    </script>
-
-
-    <!-- SEARCH LAYER -->
-
-    <script src="ol-search-layer.js">
+    <script src="./olms.js">
     </script>
 
 
 
-    <!-- =====================================================
-         MAP DATA
-    ====================================================== -->
+    <!-- ================================================= -->
+    <!-- CENTRAL EQUATORIA LAYERS -->
+    <!-- ================================================= -->
 
 
-    <!-- CENTRAL EQUATORIA -->
-
-    <script src="CentralEquatoriaStates_0.js">
+    <script src="./CentralEquatoriaStates_0.js">
     </script>
 
 
-    <script src="Central_Equatoria_GIScentral_equatoria_states_1.js">
-    </script>
-
-
-
-    <!-- SCHOOLS -->
-
-    <script src="amenity_school_2.js">
-    </script>
-
-
-    <script src="amenity_school_3.js">
-    </script>
-
-
-    <script src="amenity_school_4.js">
+    <script src="./Central_Equatoria_GIScentral_equatoria_states_1.js">
     </script>
 
 
 
-    <!-- PRIMARY ROADS -->
+    <!-- ================================================= -->
+    <!-- SCHOOL LAYERS -->
+    <!-- ================================================= -->
 
-    <script src="highway_primary_5.js">
+
+    <script src="./amenity_school_2.js">
     </script>
 
 
-    <script src="highway_primary_6.js">
+    <script src="./amenity_school_3.js">
     </script>
 
 
-
-    <!-- SECONDARY ROADS -->
-
-    <script src="highway_secondary_7.js">
-    </script>
-
-
-    <script src="highway_secondary_8.js">
+    <script src="./amenity_school_4.js">
     </script>
 
 
 
-    <!-- =====================================================
-         LAYER STYLES
-    ====================================================== -->
+    <!-- ================================================= -->
+    <!-- ROAD LAYERS -->
+    <!-- ================================================= -->
 
 
-    <!-- CENTRAL EQUATORIA -->
-
-    <script src="CentralEquatoriaStates_0_style.js">
+    <script src="./highway_primary_5.js">
     </script>
 
 
-    <script src="Central_Equatoria_GIScentral_equatoria_states_1_style.js">
+    <script src="./highway_primary_6.js">
     </script>
 
 
-
-    <!-- SCHOOLS -->
-
-    <script src="amenity_school_2_style.js">
+    <script src="./highway_secondary_7.js">
     </script>
 
 
-    <script src="amenity_school_3_style.js">
-    </script>
-
-
-    <script src="amenity_school_4_style.js">
+    <script src="./highway_secondary_8.js">
     </script>
 
 
 
-    <!-- PRIMARY ROADS -->
+    <!-- ================================================= -->
+    <!-- LAYER STYLES -->
+    <!-- ================================================= -->
 
-    <script src="highway_primary_5_style.js">
+
+    <script src="./CentralEquatoriaStates_0_style.js">
     </script>
 
 
-    <script src="highway_primary_6_style.js">
+    <script src="./Central_Equatoria_GIScentral_equatoria_states_1_style.js">
+    </script>
+
+
+    <script src="./amenity_school_2_style.js">
+    </script>
+
+
+    <script src="./amenity_school_3_style.js">
+    </script>
+
+
+    <script src="./amenity_school_4_style.js">
+    </script>
+
+
+    <script src="./highway_primary_5_style.js">
+    </script>
+
+
+    <script src="./highway_primary_6_style.js">
+    </script>
+
+
+    <script src="./highway_secondary_7_style.js">
+    </script>
+
+
+    <script src="./highway_secondary_8_style.js">
     </script>
 
 
 
-    <!-- SECONDARY ROADS -->
-
-    <script src="highway_secondary_7_style.js">
-    </script>
-
-
-    <script src="highway_secondary_8_style.js">
-    </script>
+    <!-- ================================================= -->
+    <!-- LAYERS CONFIGURATION -->
+    <!-- ================================================= -->
 
 
-
-    <!-- =====================================================
-         LAYERS CONFIGURATION
-    ====================================================== -->
-
-    <script src="layers.js">
+    <script src="./layers.js">
     </script>
 
 
 
-    <!-- =====================================================
-         AUTOLINKER
-    ====================================================== -->
+    <!-- ================================================= -->
+    <!-- OTHER LIBRARIES -->
+    <!-- ================================================= -->
 
-    <script src="Autolinker.min.js">
+
+    <script src="./Autolinker.min.js">
+    </script>
+
+
+    <!-- Main QGIS2Web script -->
+
+    <script src="./qgis2web.js">
     </script>
 
 
 
-    <!-- =====================================================
-         MAIN QGIS2WEB APPLICATION
-    ====================================================== -->
+    <!-- ================================================= -->
+    <!-- REMOVE LOADING SCREEN -->
+    <!-- ================================================= -->
 
-    <script src="qgis2web.js">
+
+    <script>
+
+        window.addEventListener(
+            "load",
+            function () {
+
+                var loading =
+                    document.getElementById(
+                        "loading"
+                    );
+
+                if (loading) {
+
+                    loading.style.display =
+                        "none";
+                }
+
+            }
+        );
+
+    </script>
+
+
+
+    <!-- ================================================= -->
+    <!-- ERROR DETECTION -->
+    <!-- ================================================= -->
+
+
+    <script>
+
+        window.addEventListener(
+            "error",
+            function (event) {
+
+                console.error(
+                    "GIS Error:",
+                    event.message
+                );
+
+            }
+        );
+
     </script>
 
 
