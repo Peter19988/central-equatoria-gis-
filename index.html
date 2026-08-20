@@ -22,17 +22,14 @@
     <meta name="description"
           content="Central Equatoria Geographic Information System">
 
-    <title>
-        Central Equatoria GIS
-    </title>
+    <title>Central Equatoria GIS</title>
 
 
-    <!-- =========================
-         CSS FILES
-    ========================== -->
+    <!-- =====================================================
+         OPENLAYERS CSS
+    ====================================================== -->
 
-    <link rel="stylesheet"
-          href="ol.css">
+    <link rel="stylesheet" href="ol.css">
 
     <link rel="stylesheet"
           href="fontawesome-all.min.css">
@@ -44,12 +41,15 @@
           href="ol-layerswitcher.css">
 
     <link rel="stylesheet"
+          href="ol-search-layer.css">
+
+    <link rel="stylesheet"
           href="qgis2web.css">
 
 
-    <!-- =========================
-         CUSTOM CSS
-    ========================== -->
+    <!-- =====================================================
+         PAGE STYLE
+    ====================================================== -->
 
     <style>
 
@@ -66,14 +66,12 @@
 
             overflow: hidden;
 
-            background-color: #ffffff;
+            background: #ffffff;
 
-            font-family: Arial, sans-serif;
+            font-family: Arial, Helvetica, sans-serif;
 
         }
 
-
-        /* MAP */
 
         #map {
 
@@ -86,68 +84,9 @@
         }
 
 
-        /* OPENLAYERS CONTROLS */
-
-        .ol-control > * {
-
-            background-color: #f8f8f8 !important;
-
-            color: #444444 !important;
-
-            border-radius: 3px;
-
-        }
-
-
-        .ol-control > *:hover {
-
-            background-color: #ffffff !important;
-
-        }
-
-
-        .ol-control {
-
-            background-color: rgba(255,255,255,0.4) !important;
-
-            padding: 2px !important;
-
-        }
-
-
-        /* SEARCH PLACEHOLDER */
-
-        .gcd-gl-input::placeholder {
-
-            color: #444444 !important;
-
-        }
-
-
-        .search-layer-input-search::placeholder {
-
-            color: #444444 !important;
-
-        }
-
-
-        .search-layer-input-search {
-
-            background-color: #f8f8f8 !important;
-
-        }
-
-
-        /* ATTRIBUTION */
-
-        .ol-attribution a {
-
-            color: #444444 !important;
-
-        }
-
-
-        /* POPUP */
+        /* ==============================================
+           MAP POPUP
+        =============================================== */
 
         .ol-popup {
 
@@ -155,7 +94,7 @@
 
             background-color: white;
 
-            box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+            box-shadow: 0 1px 6px rgba(0,0,0,0.35);
 
             padding: 15px;
 
@@ -168,6 +107,16 @@
             left: -50px;
 
             min-width: 280px;
+
+            max-width: 450px;
+
+            max-height: 400px;
+
+            overflow-y: auto;
+
+            display: none;
+
+            z-index: 2000;
 
         }
 
@@ -224,9 +173,11 @@
 
             position: absolute;
 
-            top: 2px;
+            top: 5px;
 
             right: 8px;
+
+            z-index: 10;
 
         }
 
@@ -235,10 +186,14 @@
 
             content: "✖";
 
+            color: #555;
+
         }
 
 
-        /* TITLE */
+        /* ==============================================
+           MAP TITLE
+        =============================================== */
 
         .gis-title {
 
@@ -252,11 +207,11 @@
 
             z-index: 1000;
 
-            background: rgba(27,94,32,0.95);
+            background: rgba(27, 94, 32, 0.95);
 
             color: white;
 
-            padding: 10px 25px;
+            padding: 10px 24px;
 
             border-radius: 5px;
 
@@ -264,22 +219,131 @@
 
             font-weight: bold;
 
-            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
 
             pointer-events: none;
+
+            white-space: nowrap;
 
         }
 
 
-        /* MOBILE TITLE */
+        /* ==============================================
+           CONTROLS
+        =============================================== */
 
-        @media screen and (max-width: 600px) {
+        .ol-control > * {
+
+            background-color: #f8f8f8 !important;
+
+            color: #444444 !important;
+
+            border-radius: 3px;
+
+        }
+
+
+        .ol-control > *:hover {
+
+            background-color: #ffffff !important;
+
+        }
+
+
+        .ol-control {
+
+            background-color: rgba(255,255,255,0.4) !important;
+
+            padding: 2px !important;
+
+        }
+
+
+        .ol-attribution a {
+
+            color: #444444 !important;
+
+        }
+
+
+        .search-layer-input-search {
+
+            background-color: #f8f8f8 !important;
+
+        }
+
+
+        .search-layer-input-search::placeholder {
+
+            color: #444444 !important;
+
+        }
+
+
+        .gcd-gl-input::placeholder {
+
+            color: #444444 !important;
+
+        }
+
+
+        /* ==============================================
+           POPUP TABLE
+        =============================================== */
+
+        .ol-popup table {
+
+            width: 100%;
+
+            border-collapse: collapse;
+
+            margin-top: 8px;
+
+        }
+
+
+        .ol-popup td,
+        .ol-popup th {
+
+            padding: 5px;
+
+            border-bottom: 1px solid #eeeeee;
+
+            text-align: left;
+
+            font-size: 13px;
+
+        }
+
+
+        .ol-popup strong {
+
+            color: #1b5e20;
+
+        }
+
+
+        /* ==============================================
+           MOBILE
+        =============================================== */
+
+        @media screen and (max-width: 650px) {
 
             .gis-title {
 
                 font-size: 15px;
 
                 padding: 8px 15px;
+
+                top: 8px;
+
+            }
+
+            .ol-popup {
+
+                min-width: 220px;
+
+                max-width: 300px;
 
             }
 
@@ -293,14 +357,16 @@
 <body>
 
 
-    <!-- =========================
-         MAP CONTAINER
-    ========================== -->
+    <!-- =====================================================
+         MAP
+    ====================================================== -->
 
     <div id="map">
 
 
-        <!-- MAP POPUP -->
+        <!-- =================================================
+             POPUP
+        ================================================== -->
 
         <div id="popup"
              class="ol-popup">
@@ -316,7 +382,9 @@
         </div>
 
 
-        <!-- MAP TITLE -->
+        <!-- =================================================
+             TITLE
+        ================================================== -->
 
         <div class="gis-title">
 
@@ -329,63 +397,66 @@
 
 
 
-    <!-- =========================
-         QGIS2WEB EXPRESSIONS
-    ========================== -->
+    <!-- =====================================================
+         JAVASCRIPT LIBRARIES
+    ====================================================== -->
+
+
+    <!-- QGIS EXPRESSIONS -->
 
     <script src="qgis2web_expressions.js">
     </script>
 
 
-
-    <!-- =========================
-         GENERAL FUNCTIONS
-    ========================== -->
+    <!-- GENERAL FUNCTIONS -->
 
     <script src="functions.js">
     </script>
 
 
-
-    <!-- =========================
-         OPENLAYERS
-    ========================== -->
+    <!-- OPENLAYERS -->
 
     <script src="ol.js">
     </script>
 
 
-
-    <!-- =========================
-         LAYER SWITCHER
-    ========================== -->
+    <!-- OPENLAYERS LAYER SWITCHER -->
 
     <script src="ol-layerswitcher.js">
     </script>
 
 
-
-    <!-- =========================
-         GEOCODER
-    ========================== -->
+    <!-- SEARCH -->
 
     <script src="photon-geocoder-autocomplete.min.js">
     </script>
 
 
-
-    <!-- =========================
-         OLMs
-    ========================== -->
+    <!-- OLMS -->
 
     <script src="olms.js">
     </script>
 
 
+    <!-- PROJ4 -->
 
-    <!-- ==================================================
-         CENTRAL EQUATORIA STATES
-    =================================================== -->
+    <script src="proj4.js">
+    </script>
+
+
+    <!-- SEARCH LAYER -->
+
+    <script src="ol-search-layer.js">
+    </script>
+
+
+
+    <!-- =====================================================
+         MAP DATA
+    ====================================================== -->
+
+
+    <!-- CENTRAL EQUATORIA -->
 
     <script src="CentralEquatoriaStates_0.js">
     </script>
@@ -396,9 +467,7 @@
 
 
 
-    <!-- ==================================================
-         SCHOOLS
-    =================================================== -->
+    <!-- SCHOOLS -->
 
     <script src="amenity_school_2.js">
     </script>
@@ -413,9 +482,7 @@
 
 
 
-    <!-- ==================================================
-         PRIMARY ROADS
-    =================================================== -->
+    <!-- PRIMARY ROADS -->
 
     <script src="highway_primary_5.js">
     </script>
@@ -426,9 +493,7 @@
 
 
 
-    <!-- ==================================================
-         SECONDARY ROADS
-    =================================================== -->
+    <!-- SECONDARY ROADS -->
 
     <script src="highway_secondary_7.js">
     </script>
@@ -439,9 +504,12 @@
 
 
 
-    <!-- ==================================================
+    <!-- =====================================================
          LAYER STYLES
-    =================================================== -->
+    ====================================================== -->
+
+
+    <!-- CENTRAL EQUATORIA -->
 
     <script src="CentralEquatoriaStates_0_style.js">
     </script>
@@ -450,6 +518,9 @@
     <script src="Central_Equatoria_GIScentral_equatoria_states_1_style.js">
     </script>
 
+
+
+    <!-- SCHOOLS -->
 
     <script src="amenity_school_2_style.js">
     </script>
@@ -463,6 +534,9 @@
     </script>
 
 
+
+    <!-- PRIMARY ROADS -->
+
     <script src="highway_primary_5_style.js">
     </script>
 
@@ -470,6 +544,9 @@
     <script src="highway_primary_6_style.js">
     </script>
 
+
+
+    <!-- SECONDARY ROADS -->
 
     <script src="highway_secondary_7_style.js">
     </script>
@@ -480,28 +557,27 @@
 
 
 
-    <!-- ==================================================
+    <!-- =====================================================
          LAYERS CONFIGURATION
-    =================================================== -->
+    ====================================================== -->
 
-    <script src="layers.js"
-            type="text/javascript">
+    <script src="layers.js">
     </script>
 
 
 
-    <!-- ==================================================
+    <!-- =====================================================
          AUTOLINKER
-    =================================================== -->
+    ====================================================== -->
 
     <script src="Autolinker.min.js">
     </script>
 
 
 
-    <!-- ==================================================
+    <!-- =====================================================
          MAIN QGIS2WEB APPLICATION
-    =================================================== -->
+    ====================================================== -->
 
     <script src="qgis2web.js">
     </script>
